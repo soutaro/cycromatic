@@ -1,0 +1,33 @@
+PATH
+  remote: ../contror
+  specs:
+    contror (0.1.0)
+      parser (~> 2.3)
+
+PATH
+  remote: .
+  specs:
+    cycromatic (0.1.0)
+      contror (~> 0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.3.0)
+    minitest (5.9.0)
+    parser (2.3.1.2)
+      ast (~> 2.2)
+    rake (10.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.12)
+  contror!
+  cycromatic!
+  minitest (~> 5.0)
+  rake (~> 10.0)
+
+BUNDLED WITH
+   1.12.5
