@@ -1,5 +1,6 @@
 require 'optparse'
 require 'rainbow'
+require 'json'
 
 module Cycromatic
   class CLI
@@ -11,24 +12,82 @@ module Cycromatic
 
     def initialize(args)
       @args = args
+
+      OptionParser.new do |opts|
+        opts.on("--format FORMAT") {|fmt| @format = fmt }
+      end.parse!(args)
     end
 
     def run
+      start_analyze()
       analyze_scripts args do |path, stmt, complexity|
+        add_result path, stmt, complexity
+      end
+      done_analyze()
+    end
+
+    def start_analyze
+      if @format == "json"
+        @results = []
+      end
+    end
+
+    def add_result(path, stmt, complexity)
+      if @format == "json"
+        @results << [path, stmt, complexity]
+      else
         case stmt
         when Contror::ANF::AST::Stmt::Base
           loc = stmt.node.loc
-          l = "#{loc.first_line}:#{loc.column}"
+          name = if stmt.is_a?(Contror::ANF::AST::Stmt::Def)
+                   stmt.name
+                 else
+                   "[toplevel]"
+                 end
 
-          if stmt.is_a?(Contror::ANF::AST::Stmt::Def)
-            puts "#{path}\t#{stmt.name}:#{l}\t#{complexity}"
-          else
-            puts "#{path}\t[toplevel]:#{l}\t#{complexity}"
-          end
+          puts "#{path}\t#{name}:#{loc.first_line}:#{loc.last_line}\t#{complexity}"
         else
           # error
           puts Rainbow("#{path}:1:1\t(error)").red
         end
+      end
+    end
+
+    def done_analyze
+      if @format == "json"
+        array = []
+
+        @results.group_by(&:first).each do |path, results|
+          if results.first[1].is_a?(Contror::ANF::AST::Stmt::Base)
+            # success
+            array.push({
+                         path: path.to_s,
+                         results: results.map {|r|
+                           stmt = r[1]
+                           loc = stmt.node.loc
+
+                           name = if stmt.is_a?(Contror::ANF::AST::Stmt::Def)
+                                    stmt.name
+                                  else
+                                    "[toplevel]"
+                                  end
+                           {
+                             method: name,
+                             line: [loc.first_line, loc.last_line],
+                             complexity: r.last
+                           }
+                         }
+                       })
+          else
+            # error
+            array.push({
+                         path: path.to_s,
+                         error: results.first[1]
+                       })
+          end
+        end
+
+        puts array.to_json
       end
     end
 
