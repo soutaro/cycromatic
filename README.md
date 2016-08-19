@@ -1,36 +1,80 @@
 # Cycromatic
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cycromatic`. To experiment with that code, run `bin/console` for an interactive prompt.
+Cycromatic calculates cyclomatic complexity of Ruby programs.
 
-TODO: Delete this and the text above, and describe your gem
+* Cyclomatic Complexity - https://en.wikipedia.org/wiki/Cyclomatic_complexity
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'cycromatic'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install by `gem`:
 
     $ gem install cycromatic
 
 ## Usage
 
-TODO: Write usage instructions here
+Ruby `cycromatic` command to calculate complexity:
 
-## Development
+```
+$ cycromatic ruby_program.rb    # Specify paths to .rb files
+$ cycromatic app config         # Specify directories including .rb files
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+The output of a file ([translator.rb](https://github.com/soutaro/contror/blob/e06797997f7b08ded4987f012704d2de04106afa/lib/contror/anf/translator.rb)) will look like the following:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+$ cycromatic ../contror/lib/contror/anf/translator.rb
+../contror/lib/contror/anf/translator.rb	[toplevel]:1:589	1
+../contror/lib/contror/anf/translator.rb	initialize:8:11	1
+../contror/lib/contror/anf/translator.rb	translate:14:18	1
+../contror/lib/contror/anf/translator.rb	with_new_block:20:35	3
+../contror/lib/contror/anf/translator.rb	current_block:37:39	1
+../contror/lib/contror/anf/translator.rb	push_stmt:41:44	1
+../contror/lib/contror/anf/translator.rb	normalize_node:46:57	3
+../contror/lib/contror/anf/translator.rb	translate0:59:476	52
+../contror/lib/contror/anf/translator.rb	translate_arg:478:489	3
+../contror/lib/contror/anf/translator.rb	translate_call:491:531	2
+../contror/lib/contror/anf/translator.rb	translate_params:533:545	2
+../contror/lib/contror/anf/translator.rb	value_node?:547:564	7
+../contror/lib/contror/anf/translator.rb	fresh_var:566:569	1
+../contror/lib/contror/anf/translator.rb	translate_var:571:586	5
+```
+
+Each line consists of three columns:
+
+* Path to file
+* Method name or `[toplevel]` `:` first line `:` last line
+* Complexity, or `[error]` if failed
+
+You can give `--format=json` option to output calculated metric as JSON format.
+
+```json
+$ cycromatic --format json ../contror/lib/contror/anf/translator.rb | jq .
+[
+  {
+    "path": "../contror/lib/contror/anf/ast/stmt.rb",
+    "results": [
+      {
+        "method": "[toplevel]",
+        "line": [
+          1,
+          522
+        ],
+        "complexity": 1
+      },
+      {
+        "method": "initialize",
+        "line": [
+          9,
+          12
+        ],
+        "complexity": 1
+      },
+      ....
+    ]
+  },
+]
+```
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cycromatic.
-
