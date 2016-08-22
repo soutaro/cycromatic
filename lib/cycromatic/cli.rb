@@ -115,7 +115,12 @@ module Cycromatic
     def each_ruby_script(args, &block)
       args.each do |arg|
         path = Pathname(arg)
-        each_ruby_script0(path, &block)
+        case
+        when path.file?
+          yield path
+        when path.directory?
+          each_ruby_script0(path, &block)
+        end
       end
     end
 
