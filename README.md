@@ -48,31 +48,41 @@ Each line consists of three columns:
 You can give `--format=json` option to output calculated metric as JSON format.
 
 ```json
-$ cycromatic --format json ../contror/lib/contror/anf/translator.rb | jq .
-[
-  {
-    "path": "../contror/lib/contror/anf/ast/stmt.rb",
+$ cycromatic --format json ../contror/lib/contror/anf/translator.rb README.md | jq .
+{
+  "../contror/lib/contror/anf/translator.rb": {
     "results": [
       {
         "method": "[toplevel]",
         "line": [
           1,
-          522
+          589
         ],
         "complexity": 1
       },
       {
         "method": "initialize",
         "line": [
-          9,
-          12
+          8,
+          11
         ],
         "complexity": 1
       },
-      ....
+      ...
     ]
   },
-]
+  "README.md": {
+    "message": "unexpected token tLABEL",
+    "trace": [
+      "/Users/soutaro/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/parser-2.3.1.2/lib/parser/diagnostic/engine.rb:71:in `process'",
+      "/Users/soutaro/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/parser-2.3.1.2/lib/parser/base.rb:263:in `on_error'",
+      "/Users/soutaro/.rbenv/versions/2.3.1/lib/ruby/2.3.0/racc/parser.rb:259:in `_racc_do_parse_c'",
+      "/Users/soutaro/.rbenv/versions/2.3.1/lib/ruby/2.3.0/racc/parser.rb:259:in `do_parse'",
+      "/Users/soutaro/.rbenv/versions/2.3.1/lib/ruby/gems/2.3.0/gems/parser-2.3.1.2/lib/parser/base.rb:162:in `parse'",
+      ...
+    ]
+  }
+}
 ```
 
 ## Contributing

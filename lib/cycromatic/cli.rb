@@ -56,39 +56,41 @@ module Cycromatic
 
     def done_analyze
       if @format == "json"
-        array = []
+        hash = {}
 
         @results.group_by(&:first).each do |path, results|
-          if results.first[1].is_a?(Contror::ANF::AST::Stmt::Base)
+          case results.first[1]
+          when Contror::ANF::AST::Stmt::Base
             # success
-            array.push({
-                         path: path.to_s,
-                         results: results.map {|r|
-                           stmt = r[1]
-                           loc = stmt.node.loc
+            hash[path.to_s] = {
+              results: results.map {|r|
+                stmt = r[1]
+                loc = stmt.node.loc
 
-                           name = if stmt.is_a?(Contror::ANF::AST::Stmt::Def)
-                                    stmt.name
-                                  else
-                                    "[toplevel]"
-                                  end
-                           {
-                             method: name,
-                             line: [loc.first_line, loc.last_line],
-                             complexity: r.last
-                           }
-                         }
-                       })
-          else
+                name = if stmt.is_a?(Contror::ANF::AST::Stmt::Def)
+                         stmt.name
+                       else
+                         "[toplevel]"
+                       end
+                {
+                  method: name,
+                  line: [loc.first_line, loc.last_line],
+                  complexity: r.last
+                }
+              }
+            }
+          when StandardError
             # error
-            array.push({
-                         path: path.to_s,
-                         error: results.first[1]
-                       })
+            error = results.first[1]
+
+            hash[path.to_s] = {
+              message: error.to_s,
+              trace: error.backtrace
+            }
           end
         end
 
-        puts array.to_json
+        puts hash.to_json
       end
     end
 
