@@ -9,6 +9,7 @@ PATH
   specs:
     cycromatic (0.1.0)
       contror (~> 0.1)
+      rainbow (~> 2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -28,7 +29,6 @@ DEPENDENCIES
   contror!
   cycromatic!
   minitest (~> 5.0)
-  rainbow (~> 2.1)
   rake (~> 10.0)
 
 BUNDLED WITH
