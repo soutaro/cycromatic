@@ -1,6 +1,7 @@
 require 'optparse'
 require 'rainbow'
 require 'json'
+require 'pathname'
 
 module Cycromatic
   class CLI
