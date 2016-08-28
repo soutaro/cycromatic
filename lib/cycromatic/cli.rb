@@ -95,7 +95,8 @@ module Cycromatic
     end
 
     def analyze_scripts(args)
-      each_ruby_script args do |path|
+      paths = args.map {|arg| Pathname(arg) }
+      FileEnumerator.new(paths: paths).each do |path|
         begin
           node = Parser::CurrentRuby.parse(path.read, path.to_s)
           if node
@@ -110,35 +111,6 @@ module Cycromatic
           end
         rescue => exn
           yield path, exn, 0
-        end
-      end
-    end
-
-    def each_ruby_script(args, &block)
-      args.each do |arg|
-        path = Pathname(arg)
-        case
-        when path.file?
-          yield path
-        when path.directory?
-          each_ruby_script0(path, &block)
-        end
-      end
-    end
-
-    def each_ruby_script0(path, &block)
-      if path.basename.to_s =~ /\A\.[^\.]+/
-        return
-      end
-
-      case
-      when path.directory?
-        path.children.each do |child|
-          each_ruby_script0 child, &block
-        end
-      when path.file?
-        if path.extname == ".rb"
-          yield path
         end
       end
     end
