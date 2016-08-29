@@ -1,14 +1,8 @@
 PATH
-  remote: ../contror
-  specs:
-    contror (0.1.0)
-      parser (~> 2.3)
-
-PATH
   remote: .
   specs:
     cycromatic (0.1.0)
-      contror (~> 0.1)
+      parser (~> 2.3)
       rainbow (~> 2.1)
 
 GEM
@@ -26,7 +20,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.12)
-  contror!
   cycromatic!
   minitest (~> 5.0)
   rake (~> 10.0)

@@ -1,9 +1,9 @@
-require "cycromatic/version"
-require 'contror'
+require 'parser/current'
+require 'json'
 
-module Cycromatic
-  # Your code goes here...
-end
+require "cycromatic/version"
 require 'cycromatic/complexity'
 require 'cycromatic/calculator'
 require 'cycromatic/file_enumerator'
+require 'cycromatic/text_formatter'
+require 'cycromatic/json_formatter'
