@@ -54,11 +54,11 @@ module Cycromatic
         calculate_def node, &block
         return calculate_node(node.children[0], &block)
       when :case
-        if node.children.last.type != :when
+        if node.children.last
           count = 1
         end
       when :rescue
-        if node.children.last.type != :resbody
+        if node.children.last
           count = 1
         end
       else
