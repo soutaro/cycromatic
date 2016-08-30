@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Cyclomatic Complexity}
   spec.description   = %q{Compute Cyclomatic Complexity of Ruby programs}
-  spec.homepage      = "https://github.com/cycromatic"
+  spec.homepage      = "https://github.com/soutaro/cycromatic"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
