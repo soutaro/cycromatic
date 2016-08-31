@@ -31,9 +31,6 @@ module Cycromatic
             end
           end
         rescue => exn
-          require 'pp'
-          p exn
-          pp exn.backtrace
           formatter.error(path: path, exception: exn)
         ensure
           formatter.finished path: path
