@@ -15,6 +15,10 @@ module Cycromatic
 
       OptionParser.new do |opts|
         opts.on("--format FORMAT") {|fmt| @format = fmt }
+        opts.on("--version") do
+          puts "cycromatic version #{VERSION}"
+          exit
+        end
       end.parse!(args)
     end
 
