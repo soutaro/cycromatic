@@ -54,4 +54,4 @@ It calculates complexities as the following:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cycromatic.
+Bug reports and pull requests are welcome on GitHub at https://github.com/soutaro/cycromatic.
