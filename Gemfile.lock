@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cycromatic (0.1.1)
+    cycromatic (0.1.3)
       parser (~> 2.3)
       rainbow (~> 2.1)
 
